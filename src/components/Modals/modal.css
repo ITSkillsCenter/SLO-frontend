@@ -1,21 +1,31 @@
-.flexModal-Delete{
-    display: flex;
-    flex-direction: column;
-    height: 200px !important;
-    width: 300px;
+.flexModal-Delete {
+  display: flex;
+  flex-direction: column;
+  height: 200px !important;
+  width: 300px;
 }
 
-.removeBlockDisplay{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
+.removeBlockDisplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
-.removeBlockDisplay p{
-    margin-top: 10px;
-    font-weight: 600;
+.removeBlockDisplay p {
+  margin-top: 10px;
+  font-weight: 600;
 }
-.removeBlockDisplay button{
-    margin-bottom: 10px;
+.removeBlockDisplay button {
+  margin-bottom: 10px;
+}
+
+.usersPrivilages {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.privilege-item {
+  width: 40%;
 }
