@@ -16,6 +16,14 @@ border-radius: 6px;
     padding: 20px 30px 10px 30px;
 }
 
+.pull-action{
+    cursor: pointer;
+}
+.poll-filter-container {
+    display: inline-block;
+    margin: 5px;
+}
+
 
 .create-poll-form-col label{
     font-weight: 600;

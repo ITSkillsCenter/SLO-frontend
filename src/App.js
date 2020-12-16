@@ -67,7 +67,8 @@ import UsersLeave from './components/usersLeave/leave'
 import Category from './components/Category/categories'
 import SubCategory from './components/Category/subCategory'
 import Poll from './components/Poll/index'
-import CreatePoll from './components/Poll/createPoll'
+import CreatePoll from './components/Poll/createPoll';
+import Answers from './components/Poll/answers';
 function App() {
 	return (
 		<Provider store={store}>
@@ -155,6 +156,7 @@ function App() {
 					<Route path="/sub_category/:id" component={SubCategory}/>
 					<Route path="/poll" component={Poll}/>
 					<Route path="/create_poll/:id" component={CreatePoll}/>
+					<Route path="/answers/:poll_id" component={Answers}/>
 					
 					
 				</Switch>
