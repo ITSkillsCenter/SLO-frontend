@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Layout from '../layout/index';
 import { httpPostFormData, httpDelete, httpPost } from '../../actions/data.action';
 import validateImage from '../../helpers/validateImage';
