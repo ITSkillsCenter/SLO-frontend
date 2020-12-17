@@ -199,7 +199,7 @@ function Wrapper(props) {
       <CustomTable
         tableHeaders={props.head()}
         tableBody={props.body()}
-        tableClass="striped hover responsive bordered"
+        tableClass="striped hover responsive bordered text-wrap"
         rowsPerPage={props.rowsPerPage}
         rowsPerPageOption={props.rowsPerPageOption}
         initialSort={{ prop: 'username', isAscending: true }}
