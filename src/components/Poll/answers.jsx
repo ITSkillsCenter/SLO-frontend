@@ -3,51 +3,62 @@ import Layout from "../layout/index";
 import { httpGet1 } from "../../actions/data.action";
 import { NotificationManager } from "react-notifications";
 import { hideLoader, showLoader } from "../../helpers/loader";
+import { Link } from "react-router-dom";
+
 export default function Answers(props) {
   const [respondents, setRespondents] = useState([]);
+  const [userID, setUserID] = useState("");
   let x = window.location.pathname.split("/");
   const id = x[x.length - 1];
-  console.log("x is value", id);
-  const [respondent, setRespondent] = useState("");
+  // console.log("the pollID is ", id);
 
-  const getAnswers = async () => {
-    try {
-      showLoader();
-      let res = await httpGet1(`/opinion_poll/1/respondents/3`);
-      setRespondents(res.respondents);
-      hideLoader();
-    } catch (error) {
-      hideLoader();
-      NotificationManager.error("Network Error. Please try again");
-    }
-  };
   const getQuestions = async () => {
     try {
       showLoader();
-      let res = await httpGet1(`/opinion_poll/${id}/see_respondents/`);
+      let res = await httpGet1(`opinion_poll/${id}/see_respondents/${userID}`);
       setRespondents(res.respondents);
       hideLoader();
     } catch (error) {
       hideLoader();
-      NotificationManager.error("Network Error. Please try again");
+      // NotificationManager.error(error);
+    }
+  };
+
+  const formatTime = (time) => {
+    let x = time.split("T");
+    const year = x[0];
+
+    const hour = x[1].split(".")[0];
+    return { year, hour };
+  };
+
+  // get the user's answers
+  const [answers, setAnswers] = useState({});
+
+  const getAnswers = async (user) => {
+    try {
+      // showLoader();
+      let res = await httpGet1(`opinion_poll/${id}/respondents/${user}`).then(
+        (res) => {
+          setAnswers(res);
+          console.log("the answers>", answers);
+        }
+      );
+
+      hideLoader();
+    } catch (error) {
+      hideLoader();
+      // NotificationManager.error("Network Error. Please try again");
     }
   };
 
   useEffect(() => {
     getQuestions();
-  }, []);
+  }, [answers]);
 
-  console.log("the que>>", respondents);
-
-  const formatTime = (time) => {
-    let x = time.split("T");
-    const year = x[0];
-    console.log("year", year);
-
-    const hour = x[1].split(".")[0];
-    console.log("HOUR", hour);
-    return { year, hour };
-  };
+  useEffect(() => {
+    getAnswers(userID);
+  }, [userID]);
 
   return (
     <div>
@@ -69,22 +80,43 @@ export default function Answers(props) {
               <div className="row">
                 <div className="col-md-4">
                   <div className="mb-5">
-                    <h3>{respondents.length} Respondents</h3>
+                    <h3>{respondents.length} Respondents</h3>{" "}
+                    <Link to={`/summary/${id}`} className="btn btn-primary">
+                      View Summary
+                      {/* <button className="btn btn-primary">View Summary</button> */}
+                    </Link>
                   </div>
                   <div className="responses ">
                     <div className="well">
-                      {respondents.map((respondent) => {
+                      {respondents.map((val) => {
                         return (
-                          <div className="card px-2 py-2">
-                            <h5>
-                              {respondent.user["firstName"] +
-                                " " +
-                                respondent.user.lastName}
+                          <div
+                            key={val.user.id}
+                            className="card px-2 py-2 cursor"
+                            // onClick={() => {
+                            //   console.log(
+                            //     "the respondent's userID",
+                            //     val.user.id
+                            //   );
+                            //   setUserID(val.user.id);
+                            //   getAnswers(val.user.id);
+                            // }}
+                          >
+                            <h5
+                              onClick={() => {
+                                console.log(
+                                  "the respondent's userID",
+                                  val.user.id
+                                );
+                                setUserID(val.user.id);
+                              }}
+                            >
+                              {val.user["firstName"] + " " + val.user.lastName}
                             </h5>
-                            {"submitted on " +
-                              formatTime(respondent.createdAt).year +
+                            {"submitted at " +
+                              formatTime(val.createdAt).hour +
                               " " +
-                              formatTime(respondent.createdAt).year}
+                              formatTime(val.createdAt).year}
                           </div>
                         );
                       })}
@@ -98,7 +130,56 @@ export default function Answers(props) {
                   </div>
                   <div className="responses ">
                     <div className="well">
-                      <Responses respondent />
+                      {/* <Responses data={answers} id={id} /> */}
+
+                      {/* <div className="card"> */}
+                      <div className="Results">
+                        <div className="well ">
+                          {answers.message ? (
+                            <div>
+                              <h5>{answers.opinionPoll.name}</h5>
+                              <h6>{answers.opinionPoll.description}</h6>
+                              <strong>Created by: </strong>
+                              {answers.opinionPoll.user.role}
+                              <br />
+                              <br />
+                              <h6>Staff Information</h6>
+                              {/* <br /> */}
+                              <strong>Fullname:</strong>{" "}
+                              {" " +
+                                answers.respondent.user.firstName +
+                                " " +
+                                answers.respondent.user.lastName}{" "}
+                              <br />
+                              <strong>Job Role:</strong>{" "}
+                              {" " + answers.respondent.user.role + " "}
+                              <br />
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        <br />
+                        {answers.message
+                          ? answers.questionsAndAnswers.map((item) => {
+                              return (
+                                <div className="card px-4 py-4">
+                                  <strong>{item.question.question}</strong>
+                                  {
+                                    item.answerAndOptions.theSelectedOptions[0]
+                                      .option
+                                  }
+                                  <br />
+                                  {/* {
+                                      item.questionsAndAnswers
+                                        .theSelectedOption[0]
+                                    } */}
+                                </div>
+                              );
+                            })
+                          : ""}
+                      </div>
+                      {/* </div> */}
                     </div>
                   </div>
                 </div>
@@ -110,15 +191,3 @@ export default function Answers(props) {
     </div>
   );
 }
-
-const Responses = (respondentID) => {
-  return (
-    <div className="card">
-      <div className="well">
-        <h6>Staff Information</h6>
-      </div>
-    </div>
-  );
-};
-
-// onBlur={this.handleEditDaata(id)}

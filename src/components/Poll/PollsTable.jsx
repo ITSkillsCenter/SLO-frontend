@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { httpDelete } from "../../actions/data.action";
 import { showLoader, hideLoader } from "../../helpers/loader";
 import { NotificationManager } from "react-notifications";
-
+import "./index.css";
 const PollsTable = ({ data, setPoll, getPolls }) => {
   const deleteHandler = async (poll) => {
     try {
@@ -25,14 +25,20 @@ const PollsTable = ({ data, setPoll, getPolls }) => {
   const bodyRow = () => {
     const body = data.map((data, index) => ({
       name: data.name,
+      createdBy: data.user.role,
       action: (
         <div className="text-center">
+          <label class="switch  mr-4">
+            <input type="checkbox" value="checked" />
+            <span class="slider round"></span>
+          </label>
           <Link to={`/create_poll/${data.id}`} className="mr-5">
             View
           </Link>
           <Link to={`/answers/${data.id}`} className="mr-5">
             Responses
           </Link>
+
           <Link
             to="#"
             type="button"
@@ -42,7 +48,11 @@ const PollsTable = ({ data, setPoll, getPolls }) => {
           >
             Edit
           </Link>
-          <Link to="#" className="ml-5" onClick={() => deleteHandler(data)}>
+          <Link
+            to="#"
+            className="ml-5 danger"
+            onClick={() => deleteHandler(data)}
+          >
             Delete
           </Link>
         </div>
@@ -57,6 +67,12 @@ const PollsTable = ({ data, setPoll, getPolls }) => {
         title: "Name",
         prop: "name",
         sortable: true,
+        filterable: true,
+      },
+      {
+        title: "CreatedBy",
+        prop: "createdBy",
+        sortable: false,
         filterable: true,
       },
       { title: "Actions", prop: "action" },

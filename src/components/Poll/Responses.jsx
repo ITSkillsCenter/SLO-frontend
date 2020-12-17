@@ -17,7 +17,6 @@ export default function Responses(props) {
   const [pollQuestion, setpollQuestion] = useState("");
   const [question_id, setQuestionId] = useState("");
 
-
   return (
     <div>
       <Layout>
