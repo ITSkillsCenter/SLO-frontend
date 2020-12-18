@@ -18,11 +18,11 @@ export default class LeaveManagement extends Component {
 								</li>
 								<li className="breadcrumb-item">
 									<a href="#" className="text-muted">
-										Performance
+										Leave
 									</a>
 								</li>
 								<li className="breadcrumb-item active text-" aria-current="page">
-									KPI
+									Leave Management
 								</li>
 							</ol>
 							<div className="section-body">
