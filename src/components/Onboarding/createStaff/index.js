@@ -43,7 +43,7 @@ export default class CreateStaff extends Component {
       }
     } catch (error) {
       hideLoader();
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -129,9 +129,8 @@ export default class CreateStaff extends Component {
         const data = {
           mobilePhone: staff.mobilePhoneCode + staff.username,
         };
-        console.log("this is the staff", data);
         const res = await httpPost(`auth/create_staff`, data).then((res) => {
-          console.log("this is the response", res);
+          // console.log("this is the response", res);
           this.getStaffs();
 
           if (res.response.code === 201) {
@@ -155,7 +154,7 @@ export default class CreateStaff extends Component {
       this.clearState();
       hideLoader();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       this.clearState();
     }
   };

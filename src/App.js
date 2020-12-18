@@ -8,8 +8,8 @@ import Qualification from "./components/Onboarding/Qualification2";
 import Employment from "./components/Onboarding/Employment";
 import Guarantor from "./components/Onboarding/Guarantor";
 // gurantor refer to personalInfo
-import Upload from "./components/Onboarding/Upload";
-import PendingApplication from "./components/Onboarding/Pending";
+// import Upload from "./components/Onboarding/Upload";
+// import PendingApplication from "./components/Onboarding/Pending";
 import StaffList from "./components/Onboarding/StaffList";
 import ViewDetails from "./components/Onboarding/ViewDetails";
 // import Branch from "./components/branch/branch";
@@ -21,6 +21,7 @@ import Kpi from "./components/KPI";
 import Responsibility from "./components/responsibility";
 import PendingActions from "./components/Leave/pendingAction/pendingActions";
 import CreateLeave from "./components/Leave/createLeave/createLeave";
+import Holidays from "./components/Leave/holidays/index";
 import LeaveMangement from "./components/Leave/LeaveManagement/leaveManagement";
 import LeaveHistory from "./components/Leave/leaveHistory/leaveHistory";
 import CreateStaff from "./components/Onboarding/createStaff";
@@ -128,6 +129,7 @@ function App() {
           />
           <ProtectedRoute path="/leave_setup" component={CreateLeave} />
           <ProtectedRoute path="/leave_management" component={LeaveMangement} />
+          <ProtectedRoute path="/holidays" component={Holidays} />
           <ProtectedRoute path="/leave_history" component={LeaveHistory} />
           <ProtectedRoute path="/view_details/:id" component={UserInfo} />
           <ProtectedRoute path="/manage_labels" component={Labels} />

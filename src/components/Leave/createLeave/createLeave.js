@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Layout from "../../layout/index";
 import "./leave.css";
 import LeaveTable from "./leaveTable";
-import axios from "axios";
 
 export default class CreateLeave extends Component {
 	render() {
@@ -19,12 +18,10 @@ export default class CreateLeave extends Component {
 								</li>
 								<li className="breadcrumb-item">
 									<a href="#" className="text-muted">
-										Performance
+										Leave Setup
 									</a>
 								</li>
-								<li className="breadcrumb-item active text-" aria-current="page">
-									KPI
-								</li>
+				
 							</ol>
 							<div className="section-body">
 								<div className="row">
