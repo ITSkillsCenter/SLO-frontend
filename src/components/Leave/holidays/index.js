@@ -35,12 +35,55 @@ const CreateLeave = () => {
     setHoliday({ ...holiday, [event.target.name]: event.target.value });
   };
 
+  const deleteHandler = async (id) => {
+    try {
+      let istrue = window.confirm(
+        "Are you sure you want to delete this holiday?"
+      );
+      if (!istrue) {
+        return;
+      }
+      showLoader();
+      await httpDelete(`holidays/${id}/`);
+      getHolidays();
+      hideLoader();
+      return NotificationManager.success("Success! Holiday has been deleted");
+    } catch (error) {
+      hideLoader();
+      return NotificationManager.error("Network Error. Please try again");
+    }
+  };
+  const updateHoliday = async (id) => {
+    try {
+      showLoader();
+      await httpPatch(`holidays/${id}/`, holiday);
+      getHolidays();
+      hideLoader();
+      return NotificationManager.success("Success! Holiday has been updated");
+    } catch (error) {
+      hideLoader();
+      return NotificationManager.error("Network Error. Please try again");
+    }
+  };
+
   const handleDateChange = () => {
     // setStartDate(e.target.va lue);
     // console.log("logged on change date", formatDate(startDate));
     setHoliday({ ...holiday, date: formatDate(startDate) });
   };
 
+  const getHoliday = async (id) => {
+    showLoader();
+    try {
+      const res = await httpGet(`holidays/${id}`).then((res) => {
+        setHoliday(res.holiday);
+        hideLoader();
+      });
+      // setHoliday(res.holidays);
+    } catch (error) {
+      NotificationManager.error("oops, couldn't fetch holidays");
+    }
+  };
   const getHolidays = async () => {
     showLoader();
     try {
@@ -155,10 +198,25 @@ const CreateLeave = () => {
                                         data-toggle="modal"
                                         data-target="#exampleModal45"
                                         className="edit"
+                                        onClick={() => {
+                                          getHoliday(item.id).then((res) => {
+                                            console.log(
+                                              "the holiday is ---",
+                                              res
+                                            );
+                                          });
+                                        }}
                                       >
                                         Edit
                                       </span>
-                                      <button className="del">delete</button>
+                                      <button
+                                        className="del"
+                                        onClick={() => {
+                                          deleteHandler(item.id);
+                                        }}
+                                      >
+                                        delete
+                                      </button>
                                     </td>
                                   </tr>
                                 );
@@ -342,7 +400,13 @@ const CreateLeave = () => {
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    updateHoliday(holiday.id);
+                  }}
+                >
                   Update
                 </button>
               </div>
