@@ -11,13 +11,18 @@ import "./leave.css";
 import Layout from "../../layout/index";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import HolidayTable from "./holidayTable";
+// import HolidayTable from "./holidayTable";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 const CreateLeave = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [holidays, setHolidays] = useState([]);
   const [holiday, setHoliday] = useState({});
+
+  const [reoccurring, setReoccuring] = useState("false");
+  const toggleReoccuring = () => {
+    setReoccuring(!reoccurring);
+  };
 
   const formatDate = (date) => {
     let d = new Date(date),
@@ -99,6 +104,11 @@ const CreateLeave = () => {
 
   const createHoliday = async () => {
     try {
+      if (reoccurring) {
+        let newdate = holiday.date.split("-");
+        newdate = [(newdate[0], newdate[1])].join("-");
+        holiday.date = newdate;
+      }
       httpPost(`holidays`, holiday);
       NotificationManager.success("created successfully");
     } catch (error) {
@@ -299,7 +309,11 @@ const CreateLeave = () => {
                       >
                         Reoccuring Holiday
                       </label>
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        // checked={reoccurring ? "true" : "false"}
+                        onClick={() => toggleReoccuring}
+                      />
                     </div>
                   </div>
 
@@ -385,7 +399,7 @@ const CreateLeave = () => {
                       >
                         Reoccuring Holiday
                       </label>
-                      <input type="checkbox" />
+                      <input type="checkbox" onClick={() => toggleReoccuring} />
                     </div>
                   </div>
 
