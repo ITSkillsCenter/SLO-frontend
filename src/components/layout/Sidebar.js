@@ -1,14 +1,37 @@
-import React, { useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { baseUrl } from '../../actions/data.action';
+import axios from "axios";
 
 export default function Sidebar(props) {
+  const [pr, setPr] = useState([]);
+  
+  const checkRole = (role,list) => {
+    console.log(role,list)
+    let res = list.some((item) => {
+      return item.category === role
+    });
+
+    console.log(res);
+    return res;
+  }
+
+  const setSidebar = async() => {
+    const result = await axios.get(`${baseUrl}auth/single_staff`, {
+      headers: { Authorization: localStorage.token },
+    });
+    console.log(result.data.data.privileges);
+    setPr(result.data.data.privileges);
+  }
+
   useEffect(() => {
     window.$(".app-sidebar").mCustomScrollbar({
       theme: "minimal",
       autoHideScrollbar: true,
       scrollbarPosition: "outside",
     });
-  }, []);
+    setSidebar();
+  },[]);
 
   return (
     <aside className="app-sidebar mCustomScrollbar _mCS_1 mCS-autoHide">
@@ -40,7 +63,7 @@ export default function Sidebar(props) {
           </Link>
         </li>
 
-        <li className={props.props.page === "poll" ? "active" : ""}>
+        <li className={checkRole("Opinion Poll",pr) ? "active" : "none1"}>
           <Link
             className={
               props.props.page === "poll"

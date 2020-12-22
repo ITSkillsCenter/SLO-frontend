@@ -9,14 +9,16 @@ export const getUser = () => {
 		//   return toast.warning('Please check your internet');
 		// }
 		try {
-			const { data } = await axios.get(`${baseUrl}auth/single_staff`, {
+			const result = await axios.get(`${baseUrl}auth/single_staff`, {
 				headers: { Authorization: localStorage.token },
 			});
-			const { user } = data.data;
+			console.log(result);
+			let { data } = result;
+			const { user, privileges, roles } = data.data;
 			// localStorage.setItem("token", token);
 			return dispatch({
 				type: "GET_USER_DETAILS",
-				payload: { user },
+				payload: { user, privileges, roles },
 			});
 		} catch (error) {
 			// return NotificationManager.error(error.response.data.message);

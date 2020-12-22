@@ -21,7 +21,7 @@ const user = (state = initialState, action) => {
       };
     case 'GET_USER_DETAILS':
       return {
-        userData: action.payload.user, isLoggedIn: true, role: action.payload.user.role
+        userData: action.payload.user, privileges: action.payload.privileges, isLoggedIn: true, role: action.payload.user.role
       };
     case 'UPDATE_AVATAR':
       return {
