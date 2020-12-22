@@ -1078,8 +1078,8 @@ class PersonalInfo extends Component {
                         </span>
                       </div>
                       <div className="col col-md-6 text-right">
-                        {/* <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/two/${this.props.match.params.id}`)}>
-                         <i className="fa fa-arrow-right" aria-hidden="true"></i></button> */}
+                        <button className="cursor-pointer btn btn-primary" onClick={() => this.props.history.push(`/create_staff/two/${this.props.match.params.id}`)}>
+                         <i className="fa fa-arrow-right" aria-hidden="true"></i></button>
                       </div>
                     </div>
                   </div>

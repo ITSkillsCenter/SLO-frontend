@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Sidebar(props) {
+  const [userRole, setUserRole] = useState("");
+  // console.log("this is the logged in user", userRole);
   useEffect(() => {
     window.$(".app-sidebar").mCustomScrollbar({
       theme: "minimal",
       autoHideScrollbar: true,
       scrollbarPosition: "outside",
     });
+    setUserRole(props.props.user.role);
   }, []);
 
   return (
     <aside className="app-sidebar mCustomScrollbar _mCS_1 mCS-autoHide">
-      {/* <div className="app-sidebar__user">
+      {/* <div className="app-sidebar__user"> 
           <div className="dropdown">
           <a className="nav-link pl-2 pr-2 leading-none d-flex" data-toggle="dropdown" href="#">
             <img alt="image" src="/assets/img/avatar/avatar-1.jpg" className=" avatar-md rounded-circle" />
@@ -39,7 +42,7 @@ export default function Sidebar(props) {
             </strong>
           </Link>
         </li>
-
+        {/* {this.state.props.props.user} */}
         <li className={props.props.page === "poll" ? "active" : ""}>
           <Link
             className={

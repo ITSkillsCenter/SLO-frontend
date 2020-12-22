@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import $ from "jquery";
 import { NotificationManager } from "react-notifications";
-import axios from "axios";
-import { modal } from "bootstrap";
+// import axios from "axios";
+// import { modal } from "bootstrap";
 import Layout from "../layout/index";
 import {
 	httpPost,
@@ -151,7 +151,9 @@ export default class branch extends Component {
     }
 	};
 
-  deleteBranch = () => {
+  deleteBranch = async (id) => {
+    
+    
     console.log('delete')
   }
 
