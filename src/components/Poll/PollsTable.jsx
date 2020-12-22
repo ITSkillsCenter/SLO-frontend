@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Table from "../../helpers/customTable";
 import { Link } from "react-router-dom";
-import { httpDelete } from "../../actions/data.action";
+import { httpDelete, httpPatch, httpPost1 } from "../../actions/data.action";
 import { showLoader, hideLoader } from "../../helpers/loader";
 import { NotificationManager } from "react-notifications";
 import "./index.css";
@@ -22,16 +22,41 @@ const PollsTable = ({ data, setPoll, getPolls }) => {
       return NotificationManager.error("Network Error. Please try again");
     }
   };
+
+  const activatePoll = (id) => {
+    try {
+      showLoader();
+      httpPatch(`opinion_poll/${id}/activate`);
+      hideLoader();
+      // NotificationManager.success("Poll Activated");
+      // return;
+    } catch (error) {
+      hideLoader();
+      return NotificationManager.error("Network Error, Please try again");
+    }
+  };
   const bodyRow = () => {
     const body = data.map((data, index) => ({
       name: data.name,
       createdBy: data.user.role,
       action: (
         <div className="text-center">
-          <label class="switch  mr-4">
-            <input type="checkbox" value="checked" />
-            <span class="slider round"></span>
-          </label>
+          {data.status === "active" ? (
+            <input
+              type="button"
+              disabled
+              value="active"
+              className="btn btn-disabled mr-4"
+            />
+          ) : (
+            <input
+              type="button"
+              value="activate"
+              className="btn btn-secondary p-1 mr-4"
+              onClick={() => activatePoll(data.id)}
+            />
+          )}
+
           <Link to={`/create_poll/${data.id}`} className="mr-5">
             View
           </Link>
