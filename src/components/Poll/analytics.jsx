@@ -65,8 +65,8 @@ export default function Analytics(props) {
                             return (
                               <div className="card px-4 pt-4">
                                 <h5>
-                                  {item.question.number}:{" "}
-                                  {item.question.question}:
+                                  {item.question.number}.{" "}
+                                  {item.question.question}
                                 </h5>
 
                                 {/* <h5>Options</h5> */}
