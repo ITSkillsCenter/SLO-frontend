@@ -15,6 +15,9 @@
     margin-left: auto !important;
 }
 
+.radio {
+    padding-left: 30px !important;
+}
 
 .custom-header .btn {
     padding: 0 !important;

@@ -12,7 +12,7 @@ import "./leave.css";
 import LeaveTable from "./leaveTable";
 
 export default function CreateLeave(props) {
-	const history = useHistory();
+	
 	const [roles,setRoles] = useState([]);
 	const [leaves,setLeaves] = useState([]);
 	const [leave,setLeave] = useState({});

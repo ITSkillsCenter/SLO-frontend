@@ -1,10 +1,38 @@
-import React, { Component } from "react";
+import React, { useEffect, useRef, useState } from 'react';
+import {
+	httpDelete, httpGet1,
+
+	httpPatch1, httpPost1
+} from "../../../actions/data.action";
 import Layout from "../../layout/index";
+import { hideLoader, showLoader } from '../../../helpers/loader';
 import LeaveManagementTable from "./leaveMangmentTable";
 import "./leaveM.css";
 
-export default class LeaveManagement extends Component {
-	render() {
+export default function LeaveManagement(){
+	const [leaveHistory,setLeaveHistory] = useState([]);
+	const getAllLeaveHistory = async () => {
+		try{
+		  showLoader();
+		  //setSearch(search);
+		  let query = `/all_leave_request`;
+		  let res = await httpGet1(query);
+		  console.log(res);
+		  if (res.code === 200){
+			hideLoader();
+			setLeaveHistory(res.data.leaveApplication);
+		  }
+		  hideLoader();
+		}catch(error){
+		  console.log(error);
+		  hideLoader();
+		}
+	  };
+
+	  useEffect(()=>{
+		getAllLeaveHistory();
+	  },[])
+	
 		return (
 			<div>
 				<Layout>
@@ -205,5 +233,4 @@ export default class LeaveManagement extends Component {
 				</Layout>
 			</div>
 		);
-	}
 }
