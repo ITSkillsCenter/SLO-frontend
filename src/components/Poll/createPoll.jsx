@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 export default function CreatePoll(props) {
   const { id } = useParams();
   const [PollOptions, setPollOptions] = useState([]);
-  const [savePollData, setsavePollData] = useState([]);
+  // const [savePollData, setsavePollData] = useState([]);
   const [PollOptionsInput, setPollOptionsInput] = useState("");
   const [pollQuestion, setpollQuestion] = useState("");
   const [question_id, setQuestionId] = useState("");
