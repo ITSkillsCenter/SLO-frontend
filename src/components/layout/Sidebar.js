@@ -78,7 +78,17 @@ export default function Sidebar(props) {
         </li>
 
         <li
-         className={checkRole("Opinion Poll",pr) ? "active" : "none1"}
+          className={
+            props.props.page === "branch" ||
+            props.props.page === "departments" ||
+            props.props.page === "units" ||
+            props.props.page === "roles" ||
+            props.props.page === "responsibility" ||
+            props.props.page === "kpi" ||
+            props.props.page === "staff"
+              ? "slide is-expanded"
+              : "slide"
+          }
         >
           <a
             className={
@@ -240,7 +250,12 @@ export default function Sidebar(props) {
 
         <li
           className={
-            checkRole("Leave",pr) ? "active" : "none1"
+            props.props.page === "payroll" ||
+            props.props.page === "salaryStructure" ||
+            props.props.page === "payrollSetup" ||
+            props.props.page === "viewPending"
+              ? "slide is-expanded"
+              : "slide"
           }
         >
           <a
@@ -324,7 +339,11 @@ export default function Sidebar(props) {
         </li> */}
         <li
           className={
-            checkRole("Leave",pr) ? "active" : "none1"
+            props.props.page === "leave_setup" ||
+            props.props.page === "leave_management" ||
+            props.props.page === "leave_history"
+              ? "slide is-expanded"
+              : "slide"
           }
         >
           <a
@@ -400,18 +419,14 @@ export default function Sidebar(props) {
           </ul>
         </li>
 
-        <li className={
-            checkRole("Leave",pr) ? "active" : "none1"
-          }>
+        <li>
           <Link className="side-menu__item" to="/user_role">
             <i className="side-menu__icon fa fa-user"></i>
             <span className="side-menu__label">Users Role</span>
           </Link>
         </li>
 
-        <li className={
-            checkRole("Leave",pr) ? "active" : "none1"
-          }>
+        <li>
           <Link className="side-menu__item" to="/user_leave">
             <i className="side-menu__icon fa fa-user"></i>
             <span className="side-menu__label">Users Leave</span>
