@@ -19,13 +19,14 @@ export default class branchTable extends Component {
           <span
             className="edit"
             data-toggle="modal"
-            data-target="#branchModal"
+            data-target="#branchModal2"
             onClick={() => this.props.handleEdit(data.id, "branch")}
           >
             Edit
           </span>
         </a>
       ),
+      "delete": <button onClick={() => {this.props.deleteHandler(`delete_branch/${data.id}`,'branch')}} className="del">delete</button>
     }));
     return body;
   };
@@ -46,6 +47,8 @@ export default class branchTable extends Component {
       },
       //   { title: "Area", prop: "area", sortable: true },
       { title: "Actions", prop: "action" },
+      { title: "Delete", prop: "delete" },
+
     ];
     return header;
   };

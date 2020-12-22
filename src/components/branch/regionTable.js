@@ -17,7 +17,9 @@ export default class branchTable extends Component {
 				"branchName": data.name,
 				// "officeId": data.region,
 				"address": data.address,
-        "action": <a><span className='edit' data-toggle="modal" data-target="#branchModal" onClick={() => this.props.handleEdit(data.id, 'region')}>Edit</span></a>
+				"action": <a><span className='edit' data-toggle="modal" data-target="#branchModal2" onClick={() => this.props.handleEdit(data.id, 'region')}>Edit</span></a>,
+				"delete": <button onClick={() => {this.props.deleteHandler(`delete_region/${data.id}`,'region')}} className="del">delete</button>
+				
 			}
 		));
 		return body;
@@ -34,6 +36,7 @@ export default class branchTable extends Component {
 			// { title: 'Office Id', prop: 'officeId', sortable: true },
 			{ title: 'Address', prop: 'address', sortable: true },
 			{ title: 'Actions', prop: 'action' },
+			{ title: 'Delete', prop: 'delete' },
 		];
 		return header;
 	}

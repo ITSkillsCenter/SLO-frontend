@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { NotificationManager } from "react-notifications";
 import {
   httpGet,
-
+  httpDelete,
   httpPatch, httpPost
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
@@ -33,7 +33,8 @@ export default class branch extends Component {
 			modalMode: "create",
 			currentEditId: null,
       errorMessage1: null,
-      tableMode: 'region'
+      tableMode: 'region',
+      type: ''
 		};
   }
 
@@ -48,6 +49,11 @@ export default class branch extends Component {
     }
    console.log(e.target.name)
   };
+
+  handleChange2 = (e) => {
+    console.log(e.target);
+    this.setState({ [e.target.name]: e.target.value });
+  }
   
   handleSetState = (state) => {
     this.setState({tableMode: state});
@@ -134,6 +140,9 @@ export default class branch extends Component {
   }
 
   handleEdit = async (id, editType) => {
+    this.setState({
+      type: editType
+    })
     if(editType === 'branch'){
       const found = [...this.state.branches].filter(item => item.id === id);
       const branch = found[0];
@@ -173,44 +182,77 @@ export default class branch extends Component {
     }
 	};
 
-  deleteBranch = () => {
-    console.log('delete')
-  }
 
-  handleEditSubmit = async(name, address, regionId, areaId) => {
-    const { modalMode, currentEditId } = this.state;
-    if(modalMode === 'region') {
+  deleteHandler = async (url,type)=>{
+    console.log(url);
+		try{
+		const res = await httpDelete(url);
+		  if (res.code === 200){
+      hideLoader();
+      if (type === "region"){
+        NotificationManager.success("Success! Region was deleted successfully");
+      }
+      if (type === "area"){
+        NotificationManager.success("Success! Area was deleted successfully");
+      }
+      if (type === "branch"){
+        NotificationManager.success("Success! Branch was deleted successfully");
+      }
+      
+			
+			window.location.href="/branches"
+		  }
+		}catch(error){
+		  NotificationManager.error("Network Error! Please try again")
+		}
+	  }
+
+  handleEditSubmit = async() => {
+    const { modalMode, currentEditId,name, address, regionId, areaId  } = this.state;
+    if(this.state.type === 'region') {
       const data = {
         name,
         address,
       }
+      console.log(data);
       const res = await httpPatch(`edit_region/${currentEditId}`, data);
       if (res.code === 200) {
+        NotificationManager.success("Region edited successfully");
         $(".modal").modal("hide");
         $(document.body).removeClass("modal-open");
         $(".modal-backdrop").remove();
+        window.location.href="/branches"
       }
-    } else if(modalMode === 'area'){
+    } else if(this.state.type === 'area'){
       const data = {
         name,
         address,
+        regionId,
       }
       const res = await httpPatch(`edit_area/${currentEditId}`, data);
       if (res.code === 200) {
+        NotificationManager.success("Area edited successfully");
         $(".modal").modal("hide");
         $(document.body).removeClass("modal-open");
         $(".modal-backdrop").remove();
+        window.location.href="/branches"
       }
     } else {
       const data = {
         name,
         address,
+        regionId,
+        areaId
       }
+
+      console.log(data)
       const res = await httpPatch(`edit_branch/${currentEditId}`, data);
       if (res.code === 200) {
+        NotificationManager.success("Branch edited successfully");
         $(".modal").modal("hide");
         $(document.body).removeClass("modal-open");
         $(".modal-backdrop").remove();
+        window.location.href="/branches"
       }
     }
   }
@@ -351,6 +393,8 @@ export default class branch extends Component {
                             branches={this.state.regions}
                             handleDelete={this.deleteBranch}
                             handleEdit={this.handleEdit}
+                            type={this.state.type}
+                            deleteHandler={this.deleteHandler}
                           />
                         </div>
                       }
@@ -362,6 +406,7 @@ export default class branch extends Component {
                             branches={this.state.areas}
                             handleDelete={this.deleteBranch}
                             handleEdit={this.handleEdit}
+                            deleteHandler={this.deleteHandler}
                           />
                         </div>
                       }
@@ -373,6 +418,7 @@ export default class branch extends Component {
                             branches={this.state.branches}
                             handleDelete={this.deleteBranch}
                             handleEdit={this.handleEdit}
+                            deleteHandler={this.deleteHandler}
                           />
                         </div>
                       }
@@ -399,6 +445,8 @@ export default class branch extends Component {
           errorMessage1={errorMessage1}
           tableMode = {this.state.tableMode}
           setState = {this.state.handleSetState}
+          type= {this.state.type}
+          handleChange2 = {this.handleChange2}
 				/>
 			</Layout>
 		);
