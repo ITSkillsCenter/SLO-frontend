@@ -1,21 +1,18 @@
-import React, { Component } from "react";
 import $ from "jquery";
+import React, { Component } from "react";
 import { NotificationManager } from "react-notifications";
-import axios from "axios";
-import { modal } from "bootstrap";
-import Layout from "../layout/index";
 import {
-	httpPost,
-	httpGet,
-	httpDelete,
-	httpPatch,
+  httpGet,
+
+  httpPatch, httpPost
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
+import Layout from "../layout/index";
+import BranchModal from "../Modals/Branch";
+import AreaTable from "./areaTable";
 import "./branchStyle/branch.css";
 import BranchTable from "./branchTable";
-import AreaTable from "./areaTable";
 import RegionTable from "./regionTable";
-import BranchModal from "../Modals/Branch";
 
 export default class branch extends Component {
 	constructor(props) {
@@ -31,7 +28,8 @@ export default class branch extends Component {
       areaName: '',
 			branches: [],
 			regions: [],
-			areas: [],
+      areas: [],
+      area: [],
 			modalMode: "create",
 			currentEditId: null,
       errorMessage1: null,
@@ -44,8 +42,16 @@ export default class branch extends Component {
 			this.setState({ [e.target.name]: e.target.value, errorMessage1: null });
 		} else {
 			this.setState({ [e.target.name]: e.target.value });
-		}
-	};
+    }
+    if(e.target.name === "regionId"){
+      this.getAreasById(e.target.value);
+    }
+   console.log(e.target.name)
+  };
+  
+  handleSetState = (state) => {
+    this.setState({tableMode: state});
+  }
   
   componentDidMount() {
 		this.getBranch();
@@ -80,6 +86,22 @@ export default class branch extends Component {
 				this.setState({ 
           regions: res.data.regions,
           regionOptions
+				});
+			}
+
+		}catch(error){
+			hideLoader()
+			console.log(error)
+		}
+  }
+
+  getAreasById = async (id) => {
+		try{
+      const res = await httpGet(`/all_area/${id}`);
+     
+			if (res.length > 0) {       
+				this.setState({ 
+          area: res
 				});
 			}
 
@@ -193,71 +215,66 @@ export default class branch extends Component {
     }
   }
 
-  handleSubmit = async () => {
+  handleSubmit = async (type) => {
     showLoader()
     const { name, address, regionId, areaId } = this.state;
-    if(regionId !== '' && areaId !== ''){
-      try{
-        const data = {
+    if (type === ""){
+      NotificationManager.error("Please select an office type");
+      hideLoader();
+      return;
+    }
+    if (type === "regions"){
+      let data = {
+          name,
+          address
+      }
+      const res = await httpPost("create_region", data);
+      if (res.code === 201) {
+        this.getRegions();
+        this.clearState()
+        NotificationManager.success("Region created successfully");
+        $(".modal").modal("hide");
+        $(document.body).removeClass("modal-open");
+        $(".modal-backdrop").remove();
+        hideLoader()
+      }
+    }
+    if (type === "branches"){
+      let data = {
           name,
           address,
           regionId,
           areaId
-        }
-        const res = await httpPost("create_branch", data);
+      }
+      const res = await httpPost("create_branch", data);
         if (res.code === 201) {
           this.getBranch();
           this.clearState()
+          NotificationManager.success("Branch created successfully");
           $(".modal").modal("hide");
           $(document.body).removeClass("modal-open");
           $(".modal-backdrop").remove();
           hideLoader()
         }
-      }catch(error){
-        hideLoader()
-        console.log(error)
-      }
-    } else if(regionId !== '' && areaId === ''){
-      try{
-        const data = {
-          name,
-          address,
-          regionId
-        }
-        const res = await httpPost("create_area", data);
+    }
+    if (type === "areas"){
+      let data = {
+        name,
+        address,
+        regionId,
+    }
+    const res = await httpPost("create_area", data);
         if (res.code === 201) {
           this.getAreas();
-          this.clearState()
+          this.clearState();
+          NotificationManager.success("Area created successfully");
           $(".modal").modal("hide");
           $(document.body).removeClass("modal-open");
           $(".modal-backdrop").remove();
           hideLoader()
         }
-      }catch(error){
-        hideLoader()
-        console.log(error)
-      }
-    } else if(regionId === '' && areaId === ''){
-      try{
-        const data = {
-          name,
-          address,
-        }
-        const res = await httpPost("create_region", data);
-        if (res.code === 201) {
-          this.getRegions();
-          this.clearState()
-          $(".modal").modal("hide");
-          $(document.body).removeClass("modal-open");
-          $(".modal-backdrop").remove();
-          hideLoader()
-        }
-      }catch(error){
-        hideLoader()
-        console.log(error)
-      }
     }
-    console.log('submit', this.state)
+    
   } 
   
   clearState = () => {
@@ -375,11 +392,13 @@ export default class branch extends Component {
           name={this.state.name}
           address={this.state.address}
           areaId={this.state.areaId}
-          areas={this.state.areas}
+          areas={this.state.area}
           regions={this.state.regions}
           regionId={this.state.regionId}
 					handleChange={this.handleChange}
-					errorMessage1={errorMessage1}
+          errorMessage1={errorMessage1}
+          tableMode = {this.state.tableMode}
+          setState = {this.state.handleSetState}
 				/>
 			</Layout>
 		);
