@@ -1,9 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 
-import axios from "axios";
 
-export default class LeaveTable extends Component {
-	render() {
+export default function LeaveTable(props){
+	console.log(props);
+	const tableData = props.tableData;
+	const deleteLeave = props.delete;
+	const getData = props.getData;
+	const onEdit = (id) => {
+		console.log("id",id)
+		props.setId(id);
+		getData(id);
+	}
 		return (
 			<div>
 				<div className="table-responsive">
@@ -12,7 +19,7 @@ export default class LeaveTable extends Component {
 							<tr>
 								<th>Leave Type</th>
 								<th>Leave Duration</th>
-								<th>Disapproval Level</th>
+								<th>Approval Level</th>
 								<th>Paid Level</th>
 								<th>Active</th>
 								<th>Modified</th>
@@ -21,10 +28,13 @@ export default class LeaveTable extends Component {
 						</thead>
 
 						<tbody>
-							<tr>
-								<td>Anual Leave </td>
-								<td>20-30 days</td>
-								<td>First Level</td>
+							{ 
+								tableData.map((item) => {
+									return (
+										<tr>
+								<td>{item.type} </td>
+								<td>{item.duration} months</td>
+								<td>{item.approvalLevel}</td>
 								<td>
 									{" "}
 									<input
@@ -32,6 +42,7 @@ export default class LeaveTable extends Component {
 										id="vehicle1"
 										name="vehicle1"
 										value="Bike"
+										checked={item.paidLeave ? true : false}
 									/>
 								</td>
 								<td>
@@ -41,199 +52,38 @@ export default class LeaveTable extends Component {
 										id="vehicle1"
 										name="vehicle1"
 										value="Bike"
+										checked={item.active ? true : false}
 									/>
 								</td>
-								<td>2020-03-16 12:33</td>
+								<td>{props.date(item.updatedAt)}</td>
 								<td>
 									<span
 										data-toggle="modal"
-										data-target="#exampleModal45"
+										data-target="#exampleModal46"
 										className="view"
+										onClick= {() => onEdit(`${item.id}`)}
 									>
 										View
 									</span>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="edit"
-									>
-										Edit
-									</span>
-									<button className="del">delete</button>
-								</td>
-							</tr>
 
-							<tr>
-								<td>Anual Leave </td>
-								<td>20-30 days</td>
-								<td>First Level</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>2020-03-16 12:33</td>
-								<td>
 									<span
 										data-toggle="modal"
 										data-target="#exampleModal45"
-										className="view"
-									>
-										View
-									</span>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="edit"
+										className="edit px-3"
+										onClick= {() => onEdit(`${item.id}`)}
 									>
 										Edit
 									</span>
-									<button className="del">delete</button>
-								</td>
-							</tr>
 
-							<tr>
-								<td>Anual Leave </td>
-								<td>20-30 days</td>
-								<td>First Level</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>2020-03-16 12:33</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="view"
-									>
-										View
-									</span>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="edit"
-									>
-										Edit
-									</span>
-									<button className="del">delete</button>
+									<button onClick={() => deleteLeave(`/leave/${item.id}`)} className="del">delete</button>
 								</td>
 							</tr>
-
-							<tr>
-								<td>Anual Leave </td>
-								<td>20-30 days</td>
-								<td>First Level</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>2020-03-16 12:33</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="view"
-									>
-										View
-									</span>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="edit"
-									>
-										Edit
-									</span>
-									<button className="del">delete</button>
-								</td>
-							</tr>
-
-							<tr>
-								<td>Anual Leave </td>
-								<td>20-30 days</td>
-								<td>First Level</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>
-									{" "}
-									<input
-										type="checkbox"
-										id="vehicle1"
-										name="vehicle1"
-										value="Bike"
-									/>
-								</td>
-								<td>2020-03-16 12:33</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="view"
-									>
-										View
-									</span>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal45"
-										className="edit"
-									>
-										Edit
-									</span>
-									<button className="del">delete</button>
-								</td>
-							</tr>
+									)
+								})
+								}
 						</tbody>
 					</table>
 				</div>
 			</div>
 		);
-	}
 }

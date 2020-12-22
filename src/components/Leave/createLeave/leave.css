@@ -3,6 +3,17 @@
     cursor: pointer;
 }
 
+#leave-form {
+    width: 100px;
+    height: 25px;
+}
+
+#genderCheck {
+    width: 30%;
+    height: 25px !important;
+    padding:3px;
+}
+
 .leave_cheack_box {
     display: flex;
     justify-content: space-between;
