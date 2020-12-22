@@ -15,12 +15,12 @@ export default function LeaveManagement(){
 		try{
 		  showLoader();
 		  //setSearch(search);
-		  let query = `/all_leave_request`;
+		  let query = `/all_pending_leave_request`;
 		  let res = await httpGet1(query);
 		  console.log(res);
 		  if (res.code === 200){
 			hideLoader();
-			setLeaveHistory(res.data.leaveApplication);
+			setLeaveHistory(res.data.pendingApplications);
 		  }
 		  hideLoader();
 		}catch(error){
@@ -58,7 +58,7 @@ export default function LeaveManagement(){
 									<div className="col-lg-12">
 										<div className="card">
 											<div className="card-body">
-												<LeaveManagementTable />
+												<LeaveManagementTable leaveHistory={leaveHistory} />
 											</div>
 										</div>
 									</div>

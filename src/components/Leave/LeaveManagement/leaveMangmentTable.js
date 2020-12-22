@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-export default class LeaveMngementTable extends Component {
-	render() {
+export default function LeaveMngementTable (props) {
+		console.log(props)
 		return (
 			<div>
 				<div className="table-responsive">
@@ -20,104 +20,41 @@ export default class LeaveMngementTable extends Component {
 						</thead>
 
 						<tbody>
-							<tr>
-								<td>123/44</td>
-								<td>John Doe</td>
-								<td>Manager</td>
-								<td>Lagos Branch</td>
-								<td>Benin Region</td>
-								<td>Casual Leave</td>
-								<td>Pending</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal2"
-										className="edit"
-									>
-										View Application
-									</span>
-								</td>
-							</tr>
+							{
 
-							<tr>
-								<td>123/44</td>
-								<td>John Doe</td>
-								<td>Manager</td>
-								<td>Lagos Branch</td>
-								<td>Benin Region</td>
-								<td>Casual Leave</td>
-								<td>Pending</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal2"
-										className="edit"
-									>
-										View Application
-									</span>
-								</td>
-							</tr>
+								props.leaveHistory.map((item) => {
+									return (
+										<tr>
+										<td>{item.leaveApplication.user.id}</td>
+										<td>{item.leaveApplication.user.firstName} {item.leaveApplication.user.lastName}</td>
+										<td>{item.leaveApplication.user.role} </td>
+										<td>{item.branch !== null ? item.branch.name : ""} </td>
+										<td>{item.region !== null ? item.region.name : ""}</td>
+										<td>{item.leaveApplication.leave.type}</td>
+										<td>{item.leaveApplication.status}</td>
+										<td>
+											<span
+												data-toggle="modal"
+												data-target="#exampleModal2"
+												className="edit"
+											>
+												View Application
+											</span>
+										</td>
+									</tr>
+									)
+								})
+							
+									
 
-							<tr>
-								<td>123/44</td>
-								<td>John Doe</td>
-								<td>Manager</td>
-								<td>Lagos Branch</td>
-								<td>Benin Region</td>
-								<td>Casual Leave</td>
-								<td>Pending</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal2"
-										className="edit"
-									>
-										View Application
-									</span>
-								</td>
-							</tr>
-
-							<tr>
-								<td>123/44</td>
-								<td>John Doe</td>
-								<td>Manager</td>
-								<td>Lagos Branch</td>
-								<td>Benin Region</td>
-								<td>Casual Leave</td>
-								<td>Pending</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal2"
-										className="edit"
-									>
-										View Application
-									</span>
-								</td>
-							</tr>
-
-							<tr>
-								<td>123/44</td>
-								<td>John Doe</td>
-								<td>Manager</td>
-								<td>Lagos Branch</td>
-								<td>Benin Region</td>
-								<td>Casual Leave</td>
-								<td>Pending</td>
-								<td>
-									<span
-										data-toggle="modal"
-										data-target="#exampleModal2"
-										className="edit"
-									>
-										View Application
-									</span>
-								</td>
-							</tr>
+									
+								
+							}
+							
+							
 						</tbody>
 					</table>
 				</div>
 			</div>
 		);
-	}
 }

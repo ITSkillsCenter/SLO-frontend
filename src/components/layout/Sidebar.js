@@ -1,14 +1,37 @@
-import React, { useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { baseUrl } from '../../actions/data.action';
+import axios from "axios";
 
 export default function Sidebar(props) {
+  const [pr, setPr] = useState([]);
+  
+  const checkRole = (role,list) => {
+    console.log(role,list)
+    let res = list.some((item) => {
+      return item.category === role
+    });
+
+    console.log(res);
+    return res;
+  }
+
+  const setSidebar = async() => {
+    const result = await axios.get(`${baseUrl}auth/single_staff`, {
+      headers: { Authorization: localStorage.token },
+    });
+    console.log(result.data.data.privileges);
+    setPr(result.data.data.privileges);
+  }
+
   useEffect(() => {
     window.$(".app-sidebar").mCustomScrollbar({
       theme: "minimal",
       autoHideScrollbar: true,
       scrollbarPosition: "outside",
     });
-  }, []);
+    setSidebar();
+  },[]);
 
   return (
     <aside className="app-sidebar mCustomScrollbar _mCS_1 mCS-autoHide">
@@ -40,7 +63,7 @@ export default function Sidebar(props) {
           </Link>
         </li>
 
-        <li className={props.props.page === "poll" ? "active" : ""}>
+        <li className={checkRole("Opinion Poll",pr) ? "active" : "none1"}>
           <Link
             className={
               props.props.page === "poll"
@@ -55,17 +78,7 @@ export default function Sidebar(props) {
         </li>
 
         <li
-          className={
-            props.props.page === "branch" ||
-            props.props.page === "departments" ||
-            props.props.page === "units" ||
-            props.props.page === "roles" ||
-            props.props.page === "responsibility" ||
-            props.props.page === "kpi" ||
-            props.props.page === "staff"
-              ? "slide is-expanded"
-              : "slide"
-          }
+         className={checkRole("Opinion Poll",pr) ? "active" : "none1"}
         >
           <a
             className={
@@ -227,12 +240,7 @@ export default function Sidebar(props) {
 
         <li
           className={
-            props.props.page === "payroll" ||
-            props.props.page === "salaryStructure" ||
-            props.props.page === "payrollSetup" ||
-            props.props.page === "viewPending"
-              ? "slide is-expanded"
-              : "slide"
+            checkRole("Leave",pr) ? "active" : "none1"
           }
         >
           <a
@@ -316,11 +324,7 @@ export default function Sidebar(props) {
         </li> */}
         <li
           className={
-            props.props.page === "leave_setup" ||
-            props.props.page === "leave_management" ||
-            props.props.page === "leave_history"
-              ? "slide is-expanded"
-              : "slide"
+            checkRole("Leave",pr) ? "active" : "none1"
           }
         >
           <a
@@ -396,14 +400,18 @@ export default function Sidebar(props) {
           </ul>
         </li>
 
-        <li>
+        <li className={
+            checkRole("Leave",pr) ? "active" : "none1"
+          }>
           <Link className="side-menu__item" to="/user_role">
             <i className="side-menu__icon fa fa-user"></i>
             <span className="side-menu__label">Users Role</span>
           </Link>
         </li>
 
-        <li>
+        <li className={
+            checkRole("Leave",pr) ? "active" : "none1"
+          }>
           <Link className="side-menu__item" to="/user_leave">
             <i className="side-menu__icon fa fa-user"></i>
             <span className="side-menu__label">Users Leave</span>
