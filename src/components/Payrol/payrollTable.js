@@ -29,7 +29,7 @@ export default class payroll extends Component {
 						></span>
 					</Link>
 
-					{/* <Link to={`edit-payroll/${data.id}`}>
+					<Link to={`edit-payroll/${data.id}`}>
 						{" "}
 						<span
 							className="edit"
@@ -41,7 +41,7 @@ export default class payroll extends Component {
 						className="del"
 						onClick={() => this.props.deletePayroll(data.id)}
 						className="fa fa-trash mr-4 add-cursor"
-					></span> */}
+					></span>
 				</a>
 			),
 		}));

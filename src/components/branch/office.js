@@ -1,13 +1,16 @@
 import $ from "jquery";
 import React, { Component } from "react";
 import { NotificationManager } from "react-notifications";
+// import axios from "axios";
+// import { modal } from "bootstrap";
+import Layout from "../layout/index";
 import {
   httpGet,
   httpDelete,
   httpPatch, httpPost
 } from "../../actions/data.action";
 import { hideLoader, showLoader } from "../../helpers/loader";
-import Layout from "../layout/index";
+// import Layout from "../layout/index";
 import BranchModal from "../Modals/Branch";
 import AreaTable from "./areaTable";
 import "./branchStyle/branch.css";

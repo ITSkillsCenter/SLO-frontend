@@ -1,41 +1,21 @@
-import React, {useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { baseUrl } from '../../actions/data.action';
-import axios from "axios";
 
 export default function Sidebar(props) {
-  const [pr, setPr] = useState([]);
-  
-  const checkRole = (role,list) => {
-    console.log(role,list)
-    let res = list.some((item) => {
-      return item.category === role
-    });
-
-    console.log(res);
-    return res;
-  }
-
-  const setSidebar = async() => {
-    const result = await axios.get(`${baseUrl}auth/single_staff`, {
-      headers: { Authorization: localStorage.token },
-    });
-    console.log(result.data.data.privileges);
-    setPr(result.data.data.privileges);
-  }
-
+  const [userRole, setUserRole] = useState("");
+  // console.log("this is the logged in user", userRole);
   useEffect(() => {
     window.$(".app-sidebar").mCustomScrollbar({
       theme: "minimal",
       autoHideScrollbar: true,
       scrollbarPosition: "outside",
     });
-    setSidebar();
-  },[]);
+    setUserRole(props.props.user.role);
+  }, []);
 
   return (
     <aside className="app-sidebar mCustomScrollbar _mCS_1 mCS-autoHide">
-      {/* <div className="app-sidebar__user">
+      {/* <div className="app-sidebar__user"> 
           <div className="dropdown">
           <a className="nav-link pl-2 pr-2 leading-none d-flex" data-toggle="dropdown" href="#">
             <img alt="image" src="/assets/img/avatar/avatar-1.jpg" className=" avatar-md rounded-circle" />
@@ -62,8 +42,8 @@ export default function Sidebar(props) {
             </strong>
           </Link>
         </li>
-
-        <li className={checkRole("Opinion Poll",pr) ? "active" : "none1"}>
+        {/* {this.state.props.props.user} */}
+        <li className={props.props.page === "poll" ? "active" : ""}>
           <Link
             className={
               props.props.page === "poll"
